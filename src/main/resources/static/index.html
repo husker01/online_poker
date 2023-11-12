@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Poker Game</title>
+    <script src="app.js" defer></script>
+</head>
+<body>
+<h1>Welcome to the Poker Game</h1>
+<button id="dealCards">Deal Cards</button>
+<button id="restartGame">Restart Game</button>
+<!-- Add a dropdown for selecting the number of players -->
+<select id="numPlayers">
+    <option value="2">2 Players</option>
+    <option value="3">3 Players</option>
+    <option value="4">4 Players</option>
+    <option value="5">5 Players</option>
+    <option value="6">6 Players</option>
+    <option value="7">7 Players</option>
+    <option value="8">8 Players</option>
+    <option value="9">9 Players</option>
+    <option value="10">10 Players</option>
+</select>
+
+<!-- Add a button to start the game with the selected number of players -->
+<button id="startGame">Start Game with Selected Players</button>
+<div id="playerForm">
+    <input type="text" id="playerName" placeholder="Enter Player Name" />
+    <select id="seatSelection">
+        <option value="">Select a seat</option>
+        <!-- Dynamically fill the options using JavaScript -->
+    </select>
+    <button id="sitDown">Sit Down</button>
+</div>
+<div id="seats">
+    <!-- Player seats will be updated here -->
+</div>
+
+<div id="gameArea">
+    <!-- The game output will be displayed here -->
+</div>
+
+</body>
+</html>
+
+<style>
+    .player-hand {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+    }
+
+    .player-hand img {
+        width: 100px; /* Set as appropriate for your images */
+        margin: 5px;
+    }
+    .seat {
+        text-align: center;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: inline-block;
+    }
+
+    .seat button {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+</style>
