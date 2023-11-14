@@ -18,30 +18,49 @@ public class PokerController {
     }
 
     @GetMapping("/deal")
-    public ResponseEntity<List<List<Card>>> deal() {
-        List<List<Card>> hands = gameService.dealCards(10); // Example for 10 players
-        return ResponseEntity.ok(hands);
+    public ResponseEntity<?> deal() {
+        try {
+            Map<String, List<Card>> hands = gameService.dealCards(); // Adjusted to deal cards to seated players
+
+            if (hands.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "No players are seated."));
+            }
+
+            // Print each player's hand
+            for (Map.Entry<String, List<Card>> entry : hands.entrySet()) {
+                String playerName = entry.getKey();
+                List<Card> playerHand = entry.getValue();
+
+                System.out.println("Player: " + playerName + ", Hand: " + playerHand);
+            }
+
+            return ResponseEntity.ok(hands);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
+
+
+
     @PostMapping("/restart")
     public ResponseEntity<?> restartGame() {
         gameService.restartGame();
-        return new ResponseEntity<>(HttpStatus.OK);
+        // Return some confirmation message or just an OK status
+        return ResponseEntity.ok().body("Game has been restarted, hands cleared, deck renewed.");
     }
-    @PostMapping("/start")
-    public ResponseEntity<?> startGame(@RequestParam("players") int numPlayers) {
-        if (numPlayers < 2 || numPlayers > 10) {
-            return ResponseEntity.badRequest().body("Number of players must be between 2 and 10.");
-        }
-        List<List<Card>> playersHands = gameService.startGame(numPlayers);
-        return ResponseEntity.ok(playersHands);
-    }
+
+
     @PostMapping("/join")
     public ResponseEntity<?> joinGame(@RequestBody PlayerJoinRequest request) {
         boolean success = gameService.takeSeat(request.getPlayerName(), request.getSeatNumber());
         if (!success) {
-            return ResponseEntity.badRequest().body("Seat is already taken or invalid.");
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Seat is already taken or invalid."
+            ));
         }
         return ResponseEntity.ok(Map.of(
+                "success", true,
                 "playerName", request.getPlayerName(),
                 "seatNumber", request.getSeatNumber()
         ));

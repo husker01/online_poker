@@ -10,38 +10,65 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class GameService {
 
-    private Deck deck = new Deck();
+    private Deck deck;
+    private final Map<Integer, String> seats;
+    private final Map<String, List<Card>> playerHands;
 
-    private final Map<Integer, String> seats = new ConcurrentHashMap<>();
     public GameService() {
-        deck.shuffle();
+        this.deck = new Deck();
+        this.deck.shuffle();
+        this.seats = new ConcurrentHashMap<>();
+        this.playerHands = new ConcurrentHashMap<>();
     }
 
-    public List<List<Card>> dealCards(int numberOfPlayers) {
-        List<List<Card>> playerHands = new ArrayList<>();
-        for (int i = 0; i < numberOfPlayers; i++) {
+    public Map<String, List<Card>> dealCards() {
+        if (seats.isEmpty()) {
+            throw new IllegalStateException("No players are seated.");
+        }
+        this.playerHands.clear(); // Clear previous hands
+        this.seats.values().forEach(playerName -> {
             List<Card> hand = new ArrayList<>();
             hand.add(deck.deal());
             hand.add(deck.deal());
-            playerHands.add(hand);
-        }
-        return playerHands;
+            this.playerHands.put(playerName, hand);
+        });
+        return this.playerHands;
     }
+
     public void restartGame() {
-        // Logic to restart the game
-        // This could involve reinitializing the deck, clearing player hands, etc.
+        // Reinitialize the deck and shuffle
         this.deck = new Deck();
-        deck.shuffle();
+        this.deck.shuffle();
+
+        // Clear hands without removing seated players
+        for (String playerName : seats.values()) {
+            playerHands.put(playerName, new ArrayList<>()); // Clear hands by assigning an empty list
+        }
     }
-    public List<List<Card>> startGame(int numPlayers) {
-        restartGame(); // Reset the game
-        return dealCards(numPlayers); // Deal cards to the given number of players
-    }
+
+
     public boolean takeSeat(String playerName, int seatNumber) {
         if (seatNumber < 1 || seatNumber > 10 || seats.containsKey(seatNumber)) {
             return false; // Seat is invalid or already taken
         }
         seats.put(seatNumber, playerName);
         return true;
+    }
+
+    public void leaveSeat(int seatNumber) {
+        if (seats.containsKey(seatNumber)) {
+            String playerName = seats.remove(seatNumber);
+            playerHands.remove(playerName); // Remove the hand of the player who left
+        }
+    }
+
+    // Add a getter for player hands if you need to access it from outside
+    public Map<String, List<Card>> getPlayerHands() {
+        return playerHands;
+    }
+
+    // Add a getter for the seats if you need to access it from outside
+    public Map<Integer, String> getSeats() {
+        return seats;
     }
 }
