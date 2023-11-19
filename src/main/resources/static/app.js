@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 });
 
-
-
 function dealCards() {
     fetch('/poker/deal', {
         method: 'GET',
@@ -38,21 +36,21 @@ function dealCards() {
                     const playerName = playerNameDisplay.textContent;
                     const cards = hands[playerName];
 
-                    // Clear previous content and display new card images
+                    // Clear previous content
                     playerNameDisplay.innerHTML = ''; // Clear previous cards
 
                     if (cards && cards.length > 0) {
-                        let allCardImages = ''; // Initialize a variable to hold all card image elements
-
                         cards.forEach(card => {
-                            const timestamp = new Date().getTime(); // Cache busting
-                            const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png?${timestamp}`;
-                            const imgElement = `<img src="images/cards/${imageFileName}" alt="${card.rank} of ${card.suit}" class="seat-card-img">`;
-                            allCardImages += imgElement; // Append each card image to the variable
-                        });
+                            // const timestamp = new Date().getTime(); // Cache busting
+                            // const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png?${timestamp}`;
+                            const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png`;
+                            const imgElement = document.createElement('img');
+                            imgElement.src = `images/cards/${imageFileName}`;
+                            imgElement.alt = `${card.rank} of ${card.suit}`;
+                            imgElement.classList.add('seat-card-img');
 
-                        playerNameDisplay.innerHTML = allCardImages; // Set the innerHTML once with all card images
-                        console.log("After appending:", playerNameDisplay.innerHTML);
+                            playerNameDisplay.appendChild(imgElement);
+                        });
                     }
                 }
             }
@@ -65,33 +63,33 @@ function dealCards() {
 
 
 
-
 function restartGame() {
     fetch('/poker/restart', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // If you have CSRF protection enabled, you need to add the CSRF token here.
+            // Include CSRF token if needed
         }
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to restart the game');
             }
+
             // Clear the hands displayed in the game area without removing player names
-            const gameArea = document.getElementById('gameArea');
-            gameArea.querySelectorAll('.player-hand').forEach(playerHandDiv => {
-                // Assume each player hand div contains an <h3> for the player's name and <img> for cards
-                const playerNameHeading = playerHandDiv.querySelector('h3');
-                playerHandDiv.innerHTML = ''; // Clear the hand
-                playerHandDiv.appendChild(playerNameHeading); // Re-add the player's name heading
-            });
+            for (let i = 1; i <= 10; i++) {
+                const playerNameDisplay = document.getElementById(`player-name-seat-${i}`);
+                if (playerNameDisplay) {
+                    playerNameDisplay.innerHTML = ''; // Clear card images
+                }
+            }
         })
         .catch(error => {
             console.error('Error restarting game:', error);
             document.getElementById('gameArea').innerText = 'Error restarting the game.';
         });
 }
+
 
 
 function attemptToTakeSeat(seatNumber) {

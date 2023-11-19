@@ -22,6 +22,8 @@ public class GameService {
     }
 
     public Map<String, List<Card>> dealCards() {
+        this.deck = new Deck();
+        this.deck.shuffle();
         if (seats.isEmpty()) {
             throw new IllegalStateException("No players are seated.");
         }
@@ -34,6 +36,9 @@ public class GameService {
         });
         return this.playerHands;
     }
+
+
+
 
     public void restartGame() {
         // Reinitialize the deck and shuffle
