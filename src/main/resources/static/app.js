@@ -29,6 +29,7 @@ function handleSeatClick(seatNumber) {
         if (cardContainer) {
             cardContainer.innerHTML = ''; // Clear cards
         }
+        leaveSeat(seatNumber);
     } else {
         // Seat is not occupied, attempt to take it
         attemptToTakeSeat(seatNumber);
@@ -168,5 +169,23 @@ function takeSeat(playerName, seatNumber) {
         });
 }
 
-
+function leaveSeat(seatNumber) {
+    fetch('/poker/leave', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Include CSRF token if needed
+        },
+        body: JSON.stringify({ seatNumber })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to leave the seat');
+            }
+            // Additional logic if needed after successfully leaving the seat
+        })
+        .catch(error => {
+            console.error('Error leaving seat:', error);
+        });
+}
 

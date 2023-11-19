@@ -78,8 +78,9 @@ public class PokerController {
     public ResponseEntity<?> leaveGame(@RequestBody Map<String, Integer> request) {
         int seatNumber = request.get("seatNumber");
         gameService.leaveSeat(seatNumber);
-        return ResponseEntity.ok().body("Player has left seat " + seatNumber);
+        return ResponseEntity.ok().build(); // Or return a more detailed response if needed
     }
+
 
 
     // Helper class to handle the join request
