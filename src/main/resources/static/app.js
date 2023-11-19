@@ -113,6 +113,17 @@ function attemptToTakeSeat(seatNumber) {
     takeSeat(playerName, seatNumber);
 }
 
+
+
+
+
+
+
+
+
+
+
+
 function takeSeat(playerName, seatNumber) {
     fetch('/poker/join', {
         method: 'POST',
@@ -140,15 +151,6 @@ function takeSeat(playerName, seatNumber) {
 }
 
 
-
-// Initialize seat dropdown
-const seatSelection = document.getElementById('seatSelection');
-for (let i = 1; i <= 10; i++) {
-    const option = document.createElement('option');
-    option.value = i;
-    option.text = `Seat ${i}`;
-    seatSelection.appendChild(option);
-}
 
 // Handle sit down action
 document.getElementById('sitDown').addEventListener('click', () => {

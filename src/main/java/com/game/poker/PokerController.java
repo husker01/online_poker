@@ -66,6 +66,12 @@ public class PokerController {
         ));
     }
 
+    @PostMapping("/leave")
+    public ResponseEntity<?> leaveGame(@RequestBody Map<String, Integer> request) {
+        int seatNumber = request.get("seatNumber");
+        gameService.leaveSeat(seatNumber);
+        return ResponseEntity.ok().body("Player has left seat " + seatNumber);
+    }
 
 
     // Helper class to handle the join request
