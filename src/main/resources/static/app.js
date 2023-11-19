@@ -10,12 +10,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
         seatDiv.id = `seat-${i}`;
         seatDiv.className = 'seat';
         seatDiv.innerHTML = `
-            <button onclick="attemptToTakeSeat(${i})">Seat ${i}</button>
+            <button onclick="handleSeatClick(${i})">Seat ${i}</button>
             <p id="player-name-seat-${i}"></p> <!-- Placeholder for player name -->
         `;
         seatsContainer.appendChild(seatDiv);
     }
 });
+
+// Updated function to handle seat clicks
+function handleSeatClick(seatNumber) {
+    const playerNameDisplay = document.getElementById(`player-name-seat-${seatNumber}`);
+    const cardContainer = document.getElementById(`card-container-seat-${seatNumber}`);
+
+    // Check if the seat is currently occupied
+    if (playerNameDisplay && playerNameDisplay.textContent) {
+        // Seat is occupied, clear it
+        playerNameDisplay.textContent = ''; // Clear player name
+        if (cardContainer) {
+            cardContainer.innerHTML = ''; // Clear cards
+        }
+    } else {
+        // Seat is not occupied, attempt to take it
+        attemptToTakeSeat(seatNumber);
+    }
+}
 
 function dealCards() {
     fetch('/poker/deal', {
@@ -124,16 +142,6 @@ function attemptToTakeSeat(seatNumber) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 function takeSeat(playerName, seatNumber) {
     fetch('/poker/join', {
         method: 'POST',
@@ -152,7 +160,7 @@ function takeSeat(playerName, seatNumber) {
         .then(data => {
             const playerNameDisplay = document.getElementById(`player-name-seat-${seatNumber}`);
             playerNameDisplay.textContent = playerName;
-            document.querySelector(`#seat-${seatNumber} button`).disabled = true;
+            // document.querySelector(`#seat-${seatNumber} button`).disabled = true;
         })
         .catch(error => {
             console.error('Error taking seat:', error);
@@ -161,54 +169,4 @@ function takeSeat(playerName, seatNumber) {
 }
 
 
-
-// Handle sit down action
-document.getElementById('sitDown').addEventListener('click', () => {
-    const playerName = document.getElementById('playerName').value.trim();
-    const selectedSeat = seatSelection.value;
-
-    if (!playerName) {
-        alert('Please enter your name.');
-        return;
-    }
-
-    if (!selectedSeat) {
-        alert('Please select a seat.');
-        return;
-    }
-
-    sitDown(playerName, selectedSeat);
-});
-
-// Function to manage sitting down logic
-function sitDown(playerName, seatNumber) {
-    fetch('/poker/join', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // Include CSRF token if needed
-        },
-        body: JSON.stringify({ playerName, seatNumber })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // On success, update the UI to show the player's name under the selected seat
-                const seatDiv = document.getElementById(`seat-${seatNumber}`);
-                const playerNameParagraph = seatDiv.querySelector('p') || document.createElement('p');
-                playerNameParagraph.textContent = playerName;
-                seatDiv.appendChild(playerNameParagraph);
-
-                // Optionally, disable the seat in the dropdown
-                const seatOption = document.querySelector(`#seatSelection option[value="${seatNumber}"]`);
-                seatOption.disabled = true;
-                seatOption.textContent += ' (taken)';
-            } else {
-                alert(data.message || 'Unable to take seat');
-            }
-        })
-        .catch(error => {
-            console.error('Error taking seat:', error);
-        });
-}
 
