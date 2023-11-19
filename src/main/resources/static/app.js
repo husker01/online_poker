@@ -30,26 +30,31 @@ function dealCards() {
             for (let i = 1; i <= 10; i++) {
                 const seatDiv = document.getElementById(`seat-${i}`);
                 const playerNameDisplay = seatDiv.querySelector('#player-name-seat-' + i);
+                const cardContainer = seatDiv.querySelector('#card-container-seat-' + i) || document.createElement('div');
+
+                // Create the card container if it doesn't exist
+                if (!seatDiv.contains(cardContainer)) {
+                    cardContainer.id = `card-container-seat-${i}`;
+                    cardContainer.classList.add('card-container');
+                    seatDiv.appendChild(cardContainer);
+                }
+
+                cardContainer.innerHTML = ''; // Clear previous cards
 
                 // Check if the seat is occupied (player name exists)
                 if (playerNameDisplay && playerNameDisplay.textContent) {
                     const playerName = playerNameDisplay.textContent;
                     const cards = hands[playerName];
 
-                    // Clear previous content
-                    playerNameDisplay.innerHTML = ''; // Clear previous cards
-
                     if (cards && cards.length > 0) {
                         cards.forEach(card => {
-                            // const timestamp = new Date().getTime(); // Cache busting
-                            // const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png?${timestamp}`;
                             const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png`;
                             const imgElement = document.createElement('img');
                             imgElement.src = `images/cards/${imageFileName}`;
                             imgElement.alt = `${card.rank} of ${card.suit}`;
                             imgElement.classList.add('seat-card-img');
 
-                            playerNameDisplay.appendChild(imgElement);
+                            cardContainer.appendChild(imgElement);
                         });
                     }
                 }
@@ -59,6 +64,7 @@ function dealCards() {
             console.error('Error dealing cards:', error);
         });
 }
+
 
 
 
@@ -75,14 +81,18 @@ function restartGame() {
             if (!response.ok) {
                 throw new Error('Failed to restart the game');
             }
-
-            // Clear the hands displayed in the game area without removing player names
+            return response.json();
+        })
+        .then(() => {
+            // Clear the card images for each seat
             for (let i = 1; i <= 10; i++) {
-                const playerNameDisplay = document.getElementById(`player-name-seat-${i}`);
-                if (playerNameDisplay) {
-                    playerNameDisplay.innerHTML = ''; // Clear card images
+                const cardContainer = document.getElementById(`card-container-seat-${i}`);
+                if (cardContainer) {
+                    cardContainer.innerHTML = ''; // Clear card images
                 }
             }
+            // Optionally, show a message in the game area or elsewhere
+            document.getElementById('gameArea').innerText = 'Game restarted. Cards cleared.';
         })
         .catch(error => {
             console.error('Error restarting game:', error);

@@ -19,7 +19,60 @@
     <button id="sitDown">Sit Down</button>
 </div>
 <div id="seats">
+    <div class="seat" id="seat-1">
+        <button onclick="attemptToTakeSeat(1)">Seat 1</button>
+        <p class="player-name" id="player-name-seat-1"></p>
+        <div class="card-container" id="card-container-seat-1"></div>
+    </div>
 
+    <div class="seat" id="seat-2">
+        <button onclick="attemptToTakeSeat(2)">Seat 2</button>
+        <p class="player-name" id="player-name-seat-2"></p>
+        <div class="card-container" id="card-container-seat-2"></div>
+    </div>
+    <div class="seat" id="seat-3">
+        <button onclick="attemptToTakeSeat(3)">Seat 3</button>
+        <p class="player-name" id="player-name-seat-3"></p>
+        <div class="card-container" id="card-container-seat-3"></div>
+    </div>
+    <div class="seat" id="seat-4">
+        <button onclick="attemptToTakeSeat(4)">Seat 4</button>
+        <p class="player-name" id="player-name-seat-4"></p>
+        <div class="card-container" id="card-container-seat-4"></div>
+    </div>
+    <div class="seat" id="seat-5">
+        <button onclick="attemptToTakeSeat(5)">Seat 5</button>
+        <p class="player-name" id="player-name-seat-5"></p>
+        <div class="card-container" id="card-container-seat-5"></div>
+    </div>
+    <div class="seat" id="seat-6">
+        <button onclick="attemptToTakeSeat(6)">Seat 6</button>
+        <p class="player-name" id="player-name-seat-6"></p>
+        <div class="card-container" id="card-container-seat-6"></div>
+    </div>
+    <div class="seat" id="seat-7">
+        <button onclick="attemptToTakeSeat(7)">Seat 7</button>
+        <p class="player-name" id="player-name-seat-7"></p>
+        <div class="card-container" id="card-container-seat-7"></div>
+    </div>
+    <div class="seat" id="seat-8">
+        <button onclick="attemptToTakeSeat(8)">Seat 8</button>
+        <p class="player-name" id="player-name-seat-8"></p>
+        <div class="card-container" id="card-container-seat-8"></div>
+    </div>
+    <div class="seat" id="seat-9">
+        <button onclick="attemptToTakeSeat(9)">Seat 9</button>
+        <p class="player-name" id="player-name-seat-9"></p>
+        <div class="card-container" id="card-container-seat-9"></div>
+    </div>
+
+    <!-- ...repeat for seats 3 through 10... -->
+
+    <div class="seat" id="seat-10">
+        <button onclick="attemptToTakeSeat(10)">Seat 10</button>
+        <p class="player-name" id="player-name-seat-10"></p>
+        <div class="card-container" id="card-container-seat-10"></div>
+    </div>
     <!-- Repeat for other seats -->
 </div>
 
@@ -31,6 +84,19 @@
 </html>
 
 <style>
+
+    .player-name {
+        margin-bottom: 10px; /* Adjust as needed */
+        font-size: 1em;
+        /* other styling */
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center; /* Center cards horizontally */
+        align-items: center; /* Center cards vertically */
+        /* other styling */
+    }
     .player-hand {
         margin: 10px;
         padding: 10px;
@@ -77,21 +143,6 @@
         vertical-align: middle; /* Align images vertically in the middle if they have different heights */
         z-index: 15; /* Ensures it's on top of other elements */
     }
-
-
-
-    /*#player-name-seat {*/
-    /*    display: flex; !* Enables Flexbox *!*/
-    /*    justify-content: center; !* Horizontally centers the content *!*/
-    /*    align-items: center; !* Vertically centers the content *!*/
-    /*}*/
-    #player-name-seat {
-        margin-bottom: 10px; /* Space between name and cards */
-        font-weight: bold; /* Optional: makes the name stand out */
-        font-size: 1.2em; /* Adjust font size as needed */
-    }
-
-
 
 
     /* Adjusted positions for the seats for a smaller gap */
