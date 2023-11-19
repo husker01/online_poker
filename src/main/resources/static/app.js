@@ -110,8 +110,18 @@ function attemptToTakeSeat(seatNumber) {
         return;
     }
 
+    // Check if the entered name is already displayed in any of the seats
+    const existingPlayerNames = document.querySelectorAll('.player-name');
+    for (let i = 0; i < existingPlayerNames.length; i++) {
+        if (existingPlayerNames[i].textContent.trim().toLowerCase() === playerName.toLowerCase()) {
+            alert('This player name is already taken. Please choose a different name.');
+            return;
+        }
+    }
+
     takeSeat(playerName, seatNumber);
 }
+
 
 
 

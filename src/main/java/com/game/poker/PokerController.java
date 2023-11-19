@@ -52,6 +52,13 @@ public class PokerController {
 
     @PostMapping("/join")
     public ResponseEntity<?> joinGame(@RequestBody PlayerJoinRequest request) {
+        if (gameService.isPlayerNameTaken(request.getPlayerName())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Player name is already taken."
+            ));
+        }
+
         boolean success = gameService.takeSeat(request.getPlayerName(), request.getSeatNumber());
         if (!success) {
             return ResponseEntity.badRequest().body(Map.of(
@@ -65,6 +72,7 @@ public class PokerController {
                 "seatNumber", request.getSeatNumber()
         ));
     }
+
 
     @PostMapping("/leave")
     public ResponseEntity<?> leaveGame(@RequestBody Map<String, Integer> request) {

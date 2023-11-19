@@ -37,6 +37,9 @@ public class GameService {
         return this.playerHands;
     }
 
+    public boolean isPlayerNameTaken(String playerName) {
+        return seats.values().stream().anyMatch(name -> name.equalsIgnoreCase(playerName));
+    }
 
 
 
