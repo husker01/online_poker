@@ -31,20 +31,23 @@
 <style>
 
     .player-name {
-        margin-bottom: 10px; /* Adjust as needed */
+        margin-bottom: 0px; /* Adjust as needed */
+        margin-top: 0px; /* Adjust as needed */
         font-size: 1em;
+        padding: 1px;
         /* other styling */
     }
 
     .card-container {
+        margin-top: 0px; /* Reduce margin above the card container */
         display: flex;
         justify-content: center; /* Center cards horizontally */
         align-items: center; /* Center cards vertically */
         /* other styling */
     }
     .player-hand {
-        margin: 10px;
-        padding: 10px;
+        margin: 2px;
+        padding: 2px;
         border: 1px solid #ccc;
         display: inline-block;
     }
@@ -59,10 +62,11 @@
         display: flex;        /* Enables Flexbox */
         justify-content: center; /* Horizontally centers the content */
         align-items: center;  /* Vertically centers the content */
-        height: 100vh;       /* Sets the height of the container to the full viewport height */
+        height: 80vh;       /* Sets the height of the container to the full viewport height */
         width: 100%;         /* Sets the width to full width of the viewport */
         position: relative;  /* Keeps the absolute positioning of the seats relative to this container */
     }
+
 
 
     /* Individual seats */
@@ -74,7 +78,7 @@
         height: 8vw;
         background-color: #f0f0f0;
         border: 2px solid #333;
-        padding: 20px;
+        padding: 5px;
         text-align: center;
         z-index: 2;
     }
@@ -104,7 +108,7 @@
 
     .seat button {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 0.5px;
     }
 
     #gameArea {
@@ -122,12 +126,17 @@
     }
     .buyin-amount {
         border: 1px solid #333; /* Solid line border */
-        padding: 5px;
-        margin-bottom: 5px;
+        padding: 1px;
+        margin: 0;
         text-align: center;
-        font-size: 0.8em;
+        font-size: 1em;
         background-color: #f8f8f8; /* Light background for the box */
         /* Additional styling as required */
+    }
+    .seat p[id^="player-name-seat-"] {
+        margin: 0; /* Remove margin */
+        padding: 2px; /* Reduced padding */
+        /* Other styles... */
     }
 
 </style>
