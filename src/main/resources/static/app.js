@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         seatDiv.innerHTML = `
             <button onclick="handleSeatClick(${i})">Seat ${i}</button>
             <p id="player-name-seat-${i}"></p> <!-- Placeholder for player name -->
+            <p id="buyin-amount-seat-${i}" class="buyin-amount"></p> <!-- Placeholder for buy-in amount -->
         `;
         seatsContainer.appendChild(seatDiv);
     }
@@ -123,6 +124,7 @@ function restartGame() {
 
 function attemptToTakeSeat(seatNumber) {
     const playerNameInput = document.getElementById('playerName');
+    const buyInAmount = document.getElementById('buyInAmount').value;
     const playerName = playerNameInput.value.trim();
     if (!playerName) {
         alert('Please enter your name.');
@@ -138,19 +140,19 @@ function attemptToTakeSeat(seatNumber) {
         }
     }
 
-    takeSeat(playerName, seatNumber);
+    takeSeat(playerName, seatNumber, buyInAmount);
 }
 
 
 
-function takeSeat(playerName, seatNumber) {
+function takeSeat(playerName, seatNumber, buyInAmount) {
     fetch('/poker/join', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             // Include CSRF token if needed
         },
-        body: JSON.stringify({ playerName, seatNumber })
+        body: JSON.stringify({ playerName, seatNumber, buyInAmount })
     })
         .then(response => {
             if (!response.ok) {
@@ -161,7 +163,9 @@ function takeSeat(playerName, seatNumber) {
         .then(data => {
             const playerNameDisplay = document.getElementById(`player-name-seat-${seatNumber}`);
             playerNameDisplay.textContent = playerName;
-            // document.querySelector(`#seat-${seatNumber} button`).disabled = true;
+            const buyInAmountDisplay = document.getElementById(`buyin-amount-seat-${seatNumber}`);
+            buyInAmountDisplay.textContent = `Buy-in: $${buyInAmount}`;
+
         })
         .catch(error => {
             console.error('Error taking seat:', error);
@@ -182,8 +186,18 @@ function leaveSeat(seatNumber) {
             if (!response.ok) {
                 throw new Error('Failed to leave the seat');
             }
-            // Additional logic if needed after successfully leaving the seat
+            // Clear the player's name and buy-in amount from the seat
+            const playerNameDisplay = document.getElementById(`player-name-seat-${seatNumber}`);
+            const buyInAmountDisplay = document.getElementById(`buyin-amount-seat-${seatNumber}`);
+            if (playerNameDisplay) {
+                playerNameDisplay.textContent = ''; // Clear player name
+            }
+            if (buyInAmountDisplay) {
+                buyInAmountDisplay.textContent = ''; // Clear buy-in amount
+            }
         })
+
+
         .catch(error => {
             console.error('Error leaving seat:', error);
         });

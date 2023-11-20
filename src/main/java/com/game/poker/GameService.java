@@ -3,6 +3,7 @@ package com.game.poker;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,12 +14,13 @@ public class GameService {
     private Deck deck;
     private final Map<Integer, String> seats;
     private final Map<String, List<Card>> playerHands;
-
+    private final Map<String, Integer> playerBalances;
     public GameService() {
         this.deck = new Deck();
         this.deck.shuffle();
         this.seats = new ConcurrentHashMap<>();
         this.playerHands = new ConcurrentHashMap<>();
+        this.playerBalances = new ConcurrentHashMap<>();
     }
 
     public Map<String, List<Card>> dealCards() {
@@ -55,11 +57,12 @@ public class GameService {
     }
 
 
-    public boolean takeSeat(String playerName, int seatNumber) {
+    public boolean takeSeat(String playerName, int seatNumber, int buyInAmount) {
         if (seatNumber < 1 || seatNumber > 10 || seats.containsKey(seatNumber)) {
             return false; // Seat is invalid or already taken
         }
         seats.put(seatNumber, playerName);
+        playerBalances.put(playerName, buyInAmount);
         return true;
     }
 
@@ -79,4 +82,26 @@ public class GameService {
     public Map<Integer, String> getSeats() {
         return seats;
     }
+
+    // Method to get player hands with balances
+    public Map<String, Object> getPlayerDetails() {
+        Map<String, Object> details = new ConcurrentHashMap<>();
+
+        for (Map.Entry<String, List<Card>> entry : playerHands.entrySet()) {
+            String playerName = entry.getKey();
+            List<Card> playerHand = entry.getValue();
+            Integer playerBalance = playerBalances.getOrDefault(playerName, 0);
+
+            Map<String, Object> playerDetails = new HashMap<>();
+            playerDetails.put("hand", playerHand);
+            playerDetails.put("balance", playerBalance);
+
+            details.put(playerName, playerDetails);
+        }
+
+        return details;
+    }
+
+
+
 }

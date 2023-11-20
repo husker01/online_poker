@@ -59,19 +59,23 @@ public class PokerController {
             ));
         }
 
-        boolean success = gameService.takeSeat(request.getPlayerName(), request.getSeatNumber());
+        // Use the new takeSeat method that also takes the buyInAmount
+        boolean success = gameService.takeSeat(request.getPlayerName(), request.getSeatNumber(), request.getBuyInAmount());
         if (!success) {
             return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
                     "message", "Seat is already taken or invalid."
             ));
         }
+
         return ResponseEntity.ok(Map.of(
                 "success", true,
                 "playerName", request.getPlayerName(),
-                "seatNumber", request.getSeatNumber()
+                "seatNumber", request.getSeatNumber(),
+                "buyInAmount", request.getBuyInAmount() // Include the buy-in amount in the response
         ));
     }
+
 
 
     @PostMapping("/leave")
@@ -87,11 +91,16 @@ public class PokerController {
     public static class PlayerJoinRequest {
         private String playerName;
         private int seatNumber;
-
+        private int buyInAmount; // New field for buy-in amount
         // Default constructor is needed for JSON deserialization
         public PlayerJoinRequest() {
         }
-
+        public int getBuyInAmount() {
+            return buyInAmount;
+        }
+        public void setBuyInAmount(int buyInAmount) {
+            this.buyInAmount = buyInAmount;
+        }
         // Getters and setters are required for accessing private fields
         public String getPlayerName() {
             return playerName;
