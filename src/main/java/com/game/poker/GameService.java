@@ -1,7 +1,9 @@
 package com.game.poker;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.game.poker.Player;
+import com.game.poker.PlayerRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class GameService {
 
+
+    @Autowired
+    private PlayerRepository playerRepository;
     private Deck deck;
     private final Map<Integer, String> seats;
     private final Map<String, List<Card>> playerHands;
@@ -22,6 +27,7 @@ public class GameService {
         this.playerHands = new ConcurrentHashMap<>();
         this.playerBalances = new ConcurrentHashMap<>();
     }
+
 
     public Map<String, List<Card>> dealCards() {
         this.deck = new Deck();
@@ -61,6 +67,17 @@ public class GameService {
         if (seatNumber < 1 || seatNumber > 10 || seats.containsKey(seatNumber)) {
             return false; // Seat is invalid or already taken
         }
+        // Create a new Player entity
+        Player player = new Player();
+        player.setPlayerName(playerName);
+        player.setSeatNumber(seatNumber);
+        player.setBuyInAmount(buyInAmount);
+        player.setBalance(buyInAmount); // Assuming initial balance is same as buy-in amount
+        // You might want to set 'playerHand' as well, depending on your requirements
+
+        // Save the player to the database
+        playerRepository.save(player);
+
         seats.put(seatNumber, playerName);
         playerBalances.put(playerName, buyInAmount);
         return true;
