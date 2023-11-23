@@ -35,27 +35,47 @@
     width: 100%;         /* Sets the width to full width of the viewport */
     position: relative;  /* Keeps the absolute positioning of the seats relative to this container */
 }
+/*#seats {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(3, 1fr); !* Four columns *!*/
+/*    grid-template-rows: repeat(4, 1fr); !* Three rows *!*/
+/*    gap: 10px; !* Space between seats *!*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    height: 30vh;*/
+/*    width: 100%;*/
+/*}*/
 
 
 
 /* Individual seats */
 .seat {
     position: absolute;
-    width: 8vw;
+    width: 200px;
     /*height: 230px;*/
     /*width: 10vw;*/
-    height: 8vw;
+    height: 200px;
     background-color: #f0f0f0;
     border: 2px solid #333;
     padding: 5px;
     text-align: center;
     z-index: 2;
 }
+/*.seat {*/
+/*    position: relative;*/
+/*    width: 8vw; !* Adjust to fit within the grid cell *!*/
+/*    height: 8vw; !* Adjust based on aspect ratio *!*/
+/*    padding-top: 100%; !* Aspect ratio: equal width and height *!*/
+/*    background-color: #f0f0f0;*/
+/*    border: 2px solid #333;*/
+/*    text-align: center;*/
+/*    z-index: 2;*/
+/*}*/
 
 
 .seat-card-img {
     width: auto; /* Adjust the width as needed */
-    height: 3vw; /* Keep the aspect ratio */
+    height: 80px; /* Keep the aspect ratio */
     margin: 1px; /* Adds a small space between cards */
     display: inline-block; /* Makes the images line up horizontally */
     vertical-align: middle; /* Align images vertically in the middle if they have different heights */
@@ -64,16 +84,35 @@
 
 
 /* Adjusted positions for the seats for a smaller gap */
-.seat:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); }
-.seat:nth-child(2) { top: 20%; left: 65%; transform: translate(-50%, -50%); }
-.seat:nth-child(3) { top: 40%; left: 75%; transform: translate(-50%, -50%); }
-.seat:nth-child(4) { top: 60%; left: 75%; transform: translate(-50%, -50%); }
-.seat:nth-child(5) { bottom: 20%; left: 65%; transform: translate(-50%, 50%); }
-.seat:nth-child(6) { bottom: 10%; left: 50%; transform: translateX(-50%); }
-.seat:nth-child(7) { bottom: 20%; left: 35%; transform: translate(-50%, 50%); }
-.seat:nth-child(8) { top: 60%; left: 25%; transform: translate(-50%, -50%); }
-.seat:nth-child(9) { top: 40%; left: 25%; transform: translate(-50%, -50%); }
-.seat:nth-child(10) { top: 20%; left: 35%; transform: translate(-50%, -50%); }
+/*.seat:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); }*/
+/*.seat:nth-child(2) { top: 15%; left: 65%; transform: translate(-50%, -50%); }*/
+/*.seat:nth-child(3) { top: 40%; left: 75%; transform: translate(-50%, -50%); }*/
+/*.seat:nth-child(4) { top: 60%; left: 75%; transform: translate(-50%, -50%); }*/
+/*.seat:nth-child(5) { bottom: 20%; left: 65%; transform: translate(-50%, 50%); }*/
+/*.seat:nth-child(6) { bottom: 20%; left: 50%; transform: translateX(-50%); }*/
+/*.seat:nth-child(7) { bottom: 20%; left: 35%; transform: translate(-50%, 50%); }*/
+/*.seat:nth-child(8) { top: 60%; left: 25%; transform: translate(-50%, -50%); }*/
+/*.seat:nth-child(9) { top: 40%; left: 25%; transform: translate(-50%, -50%); }*/
+/*.seat:nth-child(10) { top: 20%; left: 35%; transform: translate(-50%, -50%); }*/
+
+
+/* Top row seats */
+.seat:nth-child(1) { top: 5%; left: 25%; }
+.seat:nth-child(2) { top: 5%; left: 50%; transform: translateX(-50%); }
+.seat:nth-child(3) { top: 5%; right: 25%; }
+
+/* Left side seats */
+.seat:nth-child(10) { top: 30%; left: 25%; }
+.seat:nth-child(9) { top: 50%; left: 25%; }
+.seat:nth-child(8) { top: 75%; left: 25%; }
+
+
+/* Right side seats */
+.seat:nth-child(4) { top: 30%; right: 25%; }
+.seat:nth-child(5) { top: 50%; right: 25%; }
+.seat:nth-child(6) { top: 75%; right: 25%; }
+
+.seat:nth-child(7) { top: 75%; left: 50%; transform: translateX(-50%); }
 
 .seat button {
     display: block;
@@ -95,7 +134,7 @@
 
 #gameArea {
     position: absolute;
-    top: 57%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1400px; /* Adjust the size to fit within the circle of seats */
@@ -104,8 +143,31 @@
     background-size: cover; /* Example - scale up the image */
     background-repeat: no-repeat;
     background-position: center center;
+
     z-index: 1; /* Ensure it's below the seats */
 }
+#community-cards {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-around; /* Space out the cards */
+    width: 500px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+    /* Additional styling */
+}
+#total-pot {
+    position: absolute;
+    top: 20%; /* Adjust as needed */
+    left: 50%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Centers the element */
+    background-color: white; /* Set the box color to white */
+    padding: 10px; /* Add some padding inside the box */
+    border: 1px solid black; /* Optional: Add a border */
+    box-shadow: 0px 0px 5px #aaa; /* Optional: Add a subtle shadow */
+}
+
 .buyin-amount {
     border: 1px solid #333; /* Solid line border */
     padding: 1px;
