@@ -1,0 +1,146 @@
+
+.player-name {
+    margin-bottom: 0px; /* Adjust as needed */
+    margin-top: 0px; /* Adjust as needed */
+    font-size: 1em;
+    padding: 1px;
+    /* other styling */
+}
+
+.card-container {
+    margin-top: 0px; /* Reduce margin above the card container */
+    display: flex;
+    justify-content: center; /* Center cards horizontally */
+    align-items: center; /* Center cards vertically */
+    /* other styling */
+}
+.player-hand {
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid #ccc;
+    display: inline-block;
+}
+
+.player-hand img {
+    width: 100px; /* Set as appropriate for your images */
+    margin: 5px;
+}
+/* Table container */
+/* Style for the table container to center it on the page */
+#seats {
+    display: flex;        /* Enables Flexbox */
+    justify-content: center; /* Horizontally centers the content */
+    align-items: center;  /* Vertically centers the content */
+    height: 80vh;       /* Sets the height of the container to the full viewport height */
+    width: 100%;         /* Sets the width to full width of the viewport */
+    position: relative;  /* Keeps the absolute positioning of the seats relative to this container */
+}
+
+
+
+/* Individual seats */
+.seat {
+    position: absolute;
+    width: 8vw;
+    /*height: 230px;*/
+    /*width: 10vw;*/
+    height: 8vw;
+    background-color: #f0f0f0;
+    border: 2px solid #333;
+    padding: 5px;
+    text-align: center;
+    z-index: 2;
+}
+
+
+.seat-card-img {
+    width: auto; /* Adjust the width as needed */
+    height: 3vw; /* Keep the aspect ratio */
+    margin: 1px; /* Adds a small space between cards */
+    display: inline-block; /* Makes the images line up horizontally */
+    vertical-align: middle; /* Align images vertically in the middle if they have different heights */
+    z-index: 15; /* Ensures it's on top of other elements */
+}
+
+
+/* Adjusted positions for the seats for a smaller gap */
+.seat:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); }
+.seat:nth-child(2) { top: 20%; left: 65%; transform: translate(-50%, -50%); }
+.seat:nth-child(3) { top: 40%; left: 75%; transform: translate(-50%, -50%); }
+.seat:nth-child(4) { top: 60%; left: 75%; transform: translate(-50%, -50%); }
+.seat:nth-child(5) { bottom: 20%; left: 65%; transform: translate(-50%, 50%); }
+.seat:nth-child(6) { bottom: 10%; left: 50%; transform: translateX(-50%); }
+.seat:nth-child(7) { bottom: 20%; left: 35%; transform: translate(-50%, 50%); }
+.seat:nth-child(8) { top: 60%; left: 25%; transform: translate(-50%, -50%); }
+.seat:nth-child(9) { top: 40%; left: 25%; transform: translate(-50%, -50%); }
+.seat:nth-child(10) { top: 20%; left: 35%; transform: translate(-50%, -50%); }
+
+.seat button {
+    display: block;
+    margin-bottom: 0.5px;
+}
+
+.player-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.player-actions button {
+    /* Additional button styling if needed */
+}
+
+#gameArea {
+    position: absolute;
+    top: 57%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1400px; /* Adjust the size to fit within the circle of seats */
+    height: 800px; /* Adjust the size to fit within the circle of seats */
+    background-image: url('images/table.PNG');
+    background-size: cover; /* Example - scale up the image */
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 1; /* Ensure it's below the seats */
+}
+.buyin-amount {
+    border: 1px solid #333; /* Solid line border */
+    padding: 1px;
+    margin: 0;
+    text-align: center;
+    font-size: 1em;
+    background-color: #f8f8f8; /* Light background for the box */
+    /* Additional styling as required */
+}
+.seat p[id^="player-name-seat-"] {
+    margin: 0; /* Remove margin */
+    padding: 2px; /* Reduced padding */
+    /* Other styles... */
+}
+
+
+/* Existing styles... */
+
+@media (max-width: 600px) {
+    .seat {
+        width: 30vw;
+        height: 30vw;
+    }
+
+    .seat-card-img {
+        width: auto;
+        height: 10vw;
+    }
+
+    #gameArea {
+        width: 100%;
+        height: auto;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Other responsive adjustments as needed */
+}

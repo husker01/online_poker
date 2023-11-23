@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('dealCards').addEventListener('click', dealCards);
     document.getElementById('restartGame').addEventListener('click', restartGame);
 
-
-    // Generate seat placeholders
     const seatsContainer = document.getElementById('seats');
     for (let i = 1; i <= 10; i++) {
         const seatDiv = document.createElement('div');
@@ -13,10 +11,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             <button onclick="handleSeatClick(${i})">Seat ${i}</button>
             <p id="player-name-seat-${i}"></p> <!-- Placeholder for player name -->
             <p id="buyin-amount-seat-${i}" class="buyin-amount"></p> <!-- Placeholder for buy-in amount -->
+            <div id="card-container-seat-${i}" class="card-container"></div> <!-- Card container -->
+            <div class="player-actions">
+                <button onclick="handleBet(${i})">Bet</button>
+                <button onclick="handleCheck(${i})">Check</button>
+            </div>
         `;
         seatsContainer.appendChild(seatDiv);
     }
 });
+
 
 // Updated function to handle seat clicks
 function handleSeatClick(seatNumber) {
