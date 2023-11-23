@@ -108,26 +108,29 @@ function restartGame() {
             return response.text();
         })
         .then(message => {
+            // Clear the card images, player names, and buy-in amounts
             for (let i = 1; i <= 10; i++) {
                 const cardContainer = document.getElementById(`card-container-seat-${i}`);
                 const playerNameDisplay = document.getElementById(`player-name-seat-${i}`);
                 const buyInAmountDisplay = document.getElementById(`buyin-amount-seat-${i}`);
 
                 if (cardContainer) {
-                    cardContainer.innerHTML = ''; // Clear card images
+                    cardContainer.innerHTML = '';
                 }
                 if (playerNameDisplay) {
-                    playerNameDisplay.textContent = ''; // Clear player name
+                    playerNameDisplay.textContent = '';
                 }
                 if (buyInAmountDisplay) {
-                    buyInAmountDisplay.textContent = ''; // Clear buy-in amount
+                    buyInAmountDisplay.textContent = '';
                 }
             }
-            document.getElementById('gameArea').innerText = message;
+
+            // Display the message in the message container
+            document.getElementById('message-container').innerText = message;
         })
         .catch(error => {
             console.error('Error restarting game:', error);
-            document.getElementById('gameArea').innerText = 'Error restarting the game.';
+            document.getElementById('message-container').innerText = 'Error restarting the game.';
         });
 }
 

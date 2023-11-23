@@ -130,7 +130,17 @@
     border: 1px solid black; /* Optional: Add a border */
     box-shadow: 0px 0px 5px #aaa; /* Optional: Add a subtle shadow */
 }
-
+#message-container {
+    width: 100%; /* Full width */
+    text-align: center; /* Center the text */
+    padding: 10px; /* Some padding for spacing */
+    background-color: #f8f8f8; /* Light background color */
+    border-top: 1px solid #ccc; /* A top border for separation */
+    position: absolute; /* Positioning at the bottom */
+    bottom: 0; /* At the bottom of the page */
+    left: 0; /* Align to the left side */
+    box-sizing: border-box; /* Include padding and border in the element's width */
+}
 .buyin-amount {
     border: 1px solid #333; /* Solid line border */
     padding: 1px;
