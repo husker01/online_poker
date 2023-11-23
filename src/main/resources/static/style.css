@@ -35,18 +35,6 @@
     width: 100%;         /* Sets the width to full width of the viewport */
     position: relative;  /* Keeps the absolute positioning of the seats relative to this container */
 }
-/*#seats {*/
-/*    display: grid;*/
-/*    grid-template-columns: repeat(3, 1fr); !* Four columns *!*/
-/*    grid-template-rows: repeat(4, 1fr); !* Three rows *!*/
-/*    gap: 10px; !* Space between seats *!*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    height: 30vh;*/
-/*    width: 100%;*/
-/*}*/
-
-
 
 /* Individual seats */
 .seat {
@@ -61,17 +49,6 @@
     text-align: center;
     z-index: 2;
 }
-/*.seat {*/
-/*    position: relative;*/
-/*    width: 8vw; !* Adjust to fit within the grid cell *!*/
-/*    height: 8vw; !* Adjust based on aspect ratio *!*/
-/*    padding-top: 100%; !* Aspect ratio: equal width and height *!*/
-/*    background-color: #f0f0f0;*/
-/*    border: 2px solid #333;*/
-/*    text-align: center;*/
-/*    z-index: 2;*/
-/*}*/
-
 
 .seat-card-img {
     width: auto; /* Adjust the width as needed */
@@ -81,20 +58,6 @@
     vertical-align: middle; /* Align images vertically in the middle if they have different heights */
     z-index: 15; /* Ensures it's on top of other elements */
 }
-
-
-/* Adjusted positions for the seats for a smaller gap */
-/*.seat:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); }*/
-/*.seat:nth-child(2) { top: 15%; left: 65%; transform: translate(-50%, -50%); }*/
-/*.seat:nth-child(3) { top: 40%; left: 75%; transform: translate(-50%, -50%); }*/
-/*.seat:nth-child(4) { top: 60%; left: 75%; transform: translate(-50%, -50%); }*/
-/*.seat:nth-child(5) { bottom: 20%; left: 65%; transform: translate(-50%, 50%); }*/
-/*.seat:nth-child(6) { bottom: 20%; left: 50%; transform: translateX(-50%); }*/
-/*.seat:nth-child(7) { bottom: 20%; left: 35%; transform: translate(-50%, 50%); }*/
-/*.seat:nth-child(8) { top: 60%; left: 25%; transform: translate(-50%, -50%); }*/
-/*.seat:nth-child(9) { top: 40%; left: 25%; transform: translate(-50%, -50%); }*/
-/*.seat:nth-child(10) { top: 20%; left: 35%; transform: translate(-50%, -50%); }*/
-
 
 /* Top row seats */
 .seat:nth-child(1) { top: 5%; left: 25%; }
@@ -184,8 +147,8 @@
 }
 
 
-/* Existing styles... */
 
+/*other screen size*/
 @media (max-width: 600px) {
     .seat {
         width: 30vw;
