@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -36,12 +37,23 @@ public class GameService {
             throw new IllegalStateException("No players are seated.");
         }
         this.playerHands.clear(); // Clear previous hands
+
         this.seats.values().forEach(playerName -> {
             List<Card> hand = new ArrayList<>();
             hand.add(deck.deal());
             hand.add(deck.deal());
             this.playerHands.put(playerName, hand);
+
+            // Convert hand to plain text
+            String handText = hand.stream()
+                    .map(card -> card.toString()) // Assuming Card has a toString method
+                    .collect(Collectors.joining(", "));
+            Player player = playerRepository.findByPlayerName(playerName)
+                    .orElseThrow(() -> new RuntimeException("Player not found"));
+            player.setPlayerHand(handText);
+            playerRepository.save(player);
         });
+
         return this.playerHands;
     }
 
@@ -56,10 +68,12 @@ public class GameService {
         this.deck = new Deck();
         this.deck.shuffle();
 
-        // Clear hands without removing seated players
-        for (String playerName : seats.values()) {
-            playerHands.put(playerName, new ArrayList<>()); // Clear hands by assigning an empty list
-        }
+        // Clear all in-memory data structures
+        seats.clear();
+        playerHands.clear();
+
+        // Delete all players from the database
+        playerRepository.deleteAll();
     }
 
 
@@ -83,12 +97,19 @@ public class GameService {
         return true;
     }
 
+
     public void leaveSeat(int seatNumber) {
         if (seats.containsKey(seatNumber)) {
             String playerName = seats.remove(seatNumber);
             playerHands.remove(playerName); // Remove the hand of the player who left
+
+            // Find player by name and delete
+            playerRepository.findByPlayerName(playerName)
+                    .ifPresent(playerRepository::delete);
         }
     }
+
+
 
     // Add a getter for player hands if you need to access it from outside
     public Map<String, List<Card>> getPlayerHands() {

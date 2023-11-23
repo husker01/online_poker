@@ -101,24 +101,33 @@ function restartGame() {
             if (!response.ok) {
                 throw new Error('Failed to restart the game');
             }
-            return response.json();
+            return response.text();
         })
-        .then(() => {
-            // Clear the card images for each seat
+        .then(message => {
             for (let i = 1; i <= 10; i++) {
                 const cardContainer = document.getElementById(`card-container-seat-${i}`);
+                const playerNameDisplay = document.getElementById(`player-name-seat-${i}`);
+                const buyInAmountDisplay = document.getElementById(`buyin-amount-seat-${i}`);
+
                 if (cardContainer) {
                     cardContainer.innerHTML = ''; // Clear card images
                 }
+                if (playerNameDisplay) {
+                    playerNameDisplay.textContent = ''; // Clear player name
+                }
+                if (buyInAmountDisplay) {
+                    buyInAmountDisplay.textContent = ''; // Clear buy-in amount
+                }
             }
-            // Optionally, show a message in the game area or elsewhere
-            document.getElementById('gameArea').innerText = 'Game restarted. Cards cleared.';
+            document.getElementById('gameArea').innerText = message;
         })
         .catch(error => {
             console.error('Error restarting game:', error);
             document.getElementById('gameArea').innerText = 'Error restarting the game.';
         });
 }
+
+
 
 
 
