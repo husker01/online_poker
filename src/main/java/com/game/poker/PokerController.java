@@ -1,6 +1,6 @@
 package com.game.poker;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +12,11 @@ import java.util.Map;
 public class PokerController {
 
     private final GameService gameService;
-
-    public PokerController(GameService gameService) {
+    @Autowired
+    private final PlayerRepository playerRepository;
+    public PokerController(GameService gameService, PlayerRepository playerRepository) {
         this.gameService = gameService;
+        this.playerRepository = playerRepository;
     }
 
     @GetMapping("/deal")
@@ -84,6 +86,68 @@ public class PokerController {
         gameService.leaveSeat(seatNumber);
         return ResponseEntity.ok().build(); // Or return a more detailed response if needed
     }
+
+    @GetMapping("/minimum-seat")
+    public ResponseEntity<?> getMinimumSeatPlayer() {
+        return playerRepository.findPlayerWithMinimumSeat()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+
+
+//    @PostMapping("/bet")
+//    public ResponseEntity<?> handleBet(@RequestBody BetRequest request) {
+//        gameService.handleBet(request.getSeatNumber(), request.getBetAmount());
+//        // Return a response indicating the next player's turn
+//        return ResponseEntity.ok(gameService.getNextPlayerInfo());
+//    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> handleCheck(@RequestBody CheckRequest request) {
+        gameService.handleCheck(request.getSeatNumber());
+        Integer nextPlayerSeatNumber = gameService.getNextPlayerInfo();
+        boolean shouldDisplayCommunityCards = gameService.getAllPlayersChecked(); // Assuming this getter method exists
+
+        return ResponseEntity.ok(Map.of(
+                "nextPlayerSeatNumber", nextPlayerSeatNumber,
+                "displayCommunityCards", shouldDisplayCommunityCards
+        ));
+    }
+
+    @GetMapping("/communityCards")
+    public ResponseEntity<List<Card>> getCommunityCards() {
+        List<Card> communityCards = gameService.getCommunityCards();
+        return ResponseEntity.ok(communityCards);
+    }
+
+    // Inner classes for request payloads
+    public static class BetRequest {
+        private int seatNumber;
+        private int betAmount;
+        // Getters and setters...
+    }
+
+    public static class CheckRequest {
+        private int seatNumber;
+        public int getSeatNumber() {
+            return seatNumber;
+        }
+        // Getters and setters...
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

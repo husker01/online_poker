@@ -120,6 +120,20 @@
     height: 200px; /* Adjust as needed */
     /* Additional styling */
 }
+.card-slot {
+    flex: 1; /* Each slot takes equal width */
+    align-items: center; /* Center the cards vertically */
+    justify-content: center; /* Center the cards horizontally */
+    height: 150px; /* Adjust as needed */
+    padding: 5px;
+}
+
+/* Adjust this to size the card images appropriately */
+.card-slot img {
+    width: auto; /* Keep aspect ratio */
+    height: 100%; /* Fit to container height */
+}
+
 #total-pot {
     position: absolute;
     top: 20%; /* Adjust as needed */

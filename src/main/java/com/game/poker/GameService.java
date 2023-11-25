@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.game.poker.Player;
 import com.game.poker.PlayerRepository;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -21,12 +19,19 @@ public class GameService {
     private final Map<Integer, String> seats;
     private final Map<String, List<Card>> playerHands;
     private final Map<String, Integer> playerBalances;
+    private Integer currentPlayerSeatNumber;
+    private List<Card> communityCards = new ArrayList<>();
+
+
+    private Map<Integer, Boolean> playerChecked = new ConcurrentHashMap<>(); // Maps seat number to check status
+
     public GameService() {
         this.deck = new Deck();
         this.deck.shuffle();
         this.seats = new ConcurrentHashMap<>();
         this.playerHands = new ConcurrentHashMap<>();
         this.playerBalances = new ConcurrentHashMap<>();
+        this.communityCards = new ArrayList<>();
     }
 
 
@@ -53,15 +58,75 @@ public class GameService {
             player.setPlayerHand(handText);
             playerRepository.save(player);
         });
-
+        // Set the lowest seat number as the current player
+        this.currentPlayerSeatNumber = seats.keySet().stream().min(Integer::compare).orElse(null);
+        startBettingRound();
         return this.playerHands;
     }
+
 
     public boolean isPlayerNameTaken(String playerName) {
         return seats.values().stream().anyMatch(name -> name.equalsIgnoreCase(playerName));
     }
 
 
+//    when all players checked, deal three community cards
+    private boolean allPlayersChecked = false;
+    public void startBettingRound() {
+        playerChecked.clear();
+        for (Integer seatNumber : seats.keySet()) {
+            playerChecked.put(seatNumber, false);
+        }
+        // Other logic to start the betting round...
+    }
+
+    public void handleCheck(int seatNumber) {
+        playerChecked.put(seatNumber, true); // Mark this player as checked
+        updateCurrentPlayer();
+        checkAllPlayersChecked();
+        if (allPlayersChecked) {
+            dealCommunityCards();
+        }
+    }
+
+
+
+    private void updateCurrentPlayer() {
+        // Assuming seats are numbered 1 to N and all are occupied
+        int maxSeatNumber = Collections.max(seats.keySet());
+
+        // Increment the current player seat number
+        currentPlayerSeatNumber = (currentPlayerSeatNumber == null || currentPlayerSeatNumber >= maxSeatNumber) ? Collections.min(seats.keySet()) : currentPlayerSeatNumber + 1;
+
+        // If the next seat is empty, find the next occupied seat
+        while (!seats.containsKey(currentPlayerSeatNumber)) {
+            currentPlayerSeatNumber = (currentPlayerSeatNumber >= maxSeatNumber) ? Collections.min(seats.keySet()) : currentPlayerSeatNumber + 1;
+        }
+    }
+
+    public Integer getNextPlayerInfo() {
+        return currentPlayerSeatNumber;
+    }
+
+    private void checkAllPlayersChecked() {
+        allPlayersChecked = playerChecked.values().stream().allMatch(Boolean::booleanValue);
+        if (allPlayersChecked) {
+            // Reset for next round
+            playerChecked.clear();
+        }
+    }
+
+    public List<Card> getCommunityCards() {
+        return communityCards;
+    }
+    public boolean getAllPlayersChecked() {
+        return allPlayersChecked;
+    }
+    private void dealCommunityCards() {
+        for (int i = 0; i < 3; i++) {
+            communityCards.add(deck.deal());
+        }
+    }
 
     public void restartGame() {
         // Reinitialize the deck and shuffle

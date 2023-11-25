@@ -219,3 +219,71 @@ function leaveSeat(seatNumber) {
         });
 }
 
+function handleCheck(seatNumber) {
+    fetch('/poker/check', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ seatNumber })
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Update the UI based on the response
+            // This might include enabling action buttons for the next player
+            updateGameUI(data.nextPlayerSeatNumber);
+            if (data.displayCommunityCards) {
+                displayCommunityCards();
+            }
+        })
+        .catch(error => {
+            console.error('Error handling check:', error);
+            // Handle any errors
+        });
+}
+
+function updateGameUI(nextPlayerSeatNumber) {
+    // Disable all action buttons
+    disableAllActionButtons();
+
+    // Enable action buttons only for the next player
+    enableActionButtonsForPlayer(nextPlayerSeatNumber);
+}
+
+function disableAllActionButtons() {
+    const actionButtons = document.querySelectorAll('.player-actions button');
+    actionButtons.forEach(button => {
+        button.disabled = true;
+    });
+}
+
+function enableActionButtonsForPlayer(seatNumber) {
+    // Find the seat div for the given seatNumber
+    const seatDiv = document.getElementById(`seat-${seatNumber}`);
+
+    // Select the bet and check buttons within this div
+    const actionButtons = seatDiv.querySelectorAll('.player-actions button');
+
+    // Enable the buttons
+    actionButtons.forEach(button => {
+        button.disabled = false;
+    });
+}
+
+
+
+function displayCommunityCards() {
+    fetch('/poker/communityCards') // Adjust the endpoint as needed
+        .then(response => response.json())
+        .then(cards => {
+            cards.forEach((card, index) => {
+                const container = document.getElementById(`card-slot-${index + 1}`);
+                const imageFileName = `${card.rank.toLowerCase()}_of_${card.suit.toLowerCase()}.png`;
+                const cardImg = document.createElement('img');
+                cardImg.src = `images/cards/${imageFileName}`;
+                container.innerHTML = ''; // Clear previous card in this slot
+                container.appendChild(cardImg);
+            });
+        })
+        .catch(error => console.error('Error fetching community cards:', error));
+}
